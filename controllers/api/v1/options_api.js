@@ -46,7 +46,7 @@ module.exports.delete = async function(req, res) {
             let question = await Question.findById(option.question);
             option.remove();
             
-            question.options = question.options.filter(o_id=>o_id!=option.id);
+            question.options = question.options.filter(o_id=> o_id != option.id);
             question.save();
 
             return res.json(200, {

@@ -31,22 +31,19 @@ module.exports.delete = async function(req, res) {
         let question = await Question.findById(req.params.id);
         
         if(question) {
-            question.options.forEach(o_id => async function() {
-                let option = await Option.findById(o_id);   
+            let options = await Option.find({question: req.params.id, votes: 0});
+            if(options.length == question.options.length) {
+                question.remove();
+                await Option.deleteMany({question: req.params.id});
 
-                if(option.votes > 0) {
-                    return res.json(401, {
-                        message: "Can't delete this question; options has votes!"
-                    });
-                }
-            });
-
-            question.remove();
-            await Option.deleteMany({question: req.params.id});
-
-            return res.json(200, {
-                message: "Question deleted successfully!"
-            });
+                return res.json(200, {
+                    message: "Question deleted successfully!"
+                });
+            } else {
+                return res.json(401, {
+                    message: "Can't delete this question; options has votes!"
+                });
+            }
         }
 
         return res.json(401, {
