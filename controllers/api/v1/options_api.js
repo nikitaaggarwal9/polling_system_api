@@ -2,7 +2,6 @@ const Question = require('../../../models/question');
 const Option = require('../../../models/option');
 const { options } = require('../../../routes');
 
-
 module.exports.create = async function(req, res) {
     try {
         let question = await Question.findById(req.params.id);
