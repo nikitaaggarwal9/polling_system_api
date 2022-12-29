@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/polling_system');
+// mongoose.connect('mongodb://localhost/polling_system');
+mongoose.connect(`${process.env.DB_URL}`, {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+}).then(console.log('connect sucess to mongodb'))
 
 const db = mongoose.connection;
 
